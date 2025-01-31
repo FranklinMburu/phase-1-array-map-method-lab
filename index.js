@@ -11,14 +11,14 @@ const tutorials = [
   'what is JSONP?'
 ];
 
+// Takes care of making titles look nice
 function titleCased() {
-  return tutorials.map(tutorial => {
-    // Remove existing question mark (we'll add it back later if needed)
-    let processed = tutorial.replace(/\?$/, '');
-
-    // Handle special cases
-    processed = processed
-      .toLowerCase()
+  return tutorials.map(title => {
+    // Get rid of ? for now
+    let cleanTitle = title.replace(/\?$/, '');
+    
+    // Fix special coding terms first
+    cleanTitle = cleanTitle.toLowerCase()
       .replace(/jsonp/i, 'JSONP')
       .replace(/nan/i, 'NaN')
       .replace(/oo pattern/i, 'OO Pattern')
@@ -26,25 +26,21 @@ function titleCased() {
       .replace(/stoppropagation/i, 'StopPropagation')
       .replace(/preventdefault/i, 'PreventDefault');
 
-    // Capitalize each word
-    let result = processed
-      .split(' ')
+    // Make everything pretty
+    let prettyTitle = cleanTitle.split(' ')
       .map(word => {
-        // Don't modify special cases
-        if (['JSONP', 'NaN', 'OO', 'API', 'StopPropagation', 'PreventDefault']
-            .includes(word)) {
+        // Don't mess with special terms
+        if (['JSONP', 'NaN', 'OO', 'API', 'StopPropagation', 'PreventDefault'].includes(word)) {
           return word;
         }
-        // Always capitalize first letter of each word
-        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+        // Capitalize the rest
+        return word[0].toUpperCase() + word.slice(1).toLowerCase();
       })
       .join(' ');
 
-    // Add question mark back if original had one
-    return tutorial.endsWith('?') ? result + '?' : result;
+    // Put back the ? if it was there before
+    return title.includes('?') ? prettyTitle + '?' : prettyTitle;
   });
 }
 
 module.exports = { titleCased };
-
-
